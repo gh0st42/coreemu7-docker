@@ -53,6 +53,15 @@ RUN cd core-release-7.5.1 \
 
 # various last minute deps
 
+# evaluation dependencies
+RUN apt-get update \
+    && apt-get install -y --no-install-recommends \
+    htop \
+    sysstat \
+    bwm-ng \
+    ripgrep \
+    && apt-get clean
+
 WORKDIR /root
 RUN git clone https://github.com/gh0st42/core-helpers &&\
     cd core-helpers && ./install-symlinks.sh
