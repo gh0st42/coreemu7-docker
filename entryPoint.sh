@@ -12,4 +12,6 @@ if [ ! -z "$SSHKEY" ]; then
 	echo $SSHKEY > /root/.ssh/authorized_keys
     chmod 644 /root/.ssh/authorized_keys	
 fi
+
 core-gui
+

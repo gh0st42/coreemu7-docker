@@ -53,23 +53,9 @@ RUN cd core-release-7.5.1 \
 
 # various last minute deps
 
-# evaluation dependencies
-RUN apt-get update \
-    && apt-get install -y --no-install-recommends \
-    htop \
-    sysstat \
-    bwm-ng \
-    ripgrep \
-    && apt-get clean
-
 WORKDIR /root
 RUN git clone https://github.com/gh0st42/core-helpers &&\
     cd core-helpers && ./install-symlinks.sh
-
-WORKDIR /root
-RUN git clone https://github.com/gh0st42/core-automator &&\
-    pip install appjar &&\
-    cp core-automator/*.py /usr/local/bin
 
 # enable sshd
 RUN mkdir /var/run/sshd &&  sed -i 's/PermitRootLogin prohibit-password/PermitRootLogin yes/' /etc/ssh/sshd_config && \
@@ -85,6 +71,7 @@ ENV SSHKEY ""
 ENV NOTVISIBLE "in users profile"
 RUN echo "export VISIBLE=now" >> /etc/profile
 
+RUN sed -i 's/grpcaddress = localhost/grpcaddress = 0.0.0.0/g' /etc/core/core.conf
 EXPOSE 22
 
 # ADD extra /extra
