@@ -9,6 +9,8 @@ RUN apt-get update \
     && apt-get install -y --no-install-recommends \
     iputils-ping \
     net-tools \
+    iproute2 \
+    vlan \
     wget \
     curl \
     vim \
@@ -19,7 +21,8 @@ RUN apt-get update \
     git \
     binutils \
     ssh \
-    && apt-get clean
+    tcpdump \
+    && rm -rf /var/lib/apt/lists/*
 
 # CORE dependencies
 RUN apt-get update \
@@ -32,8 +35,9 @@ RUN apt-get update \
     psmisc \
     sudo \
     imagemagick \
+    docker.io \
     openvswitch-switch \
-    && apt-get clean
+    && rm -rf /var/lib/apt/lists/*
 
 # CORE
 RUN wget --quiet https://github.com/coreemu/core/archive/release-7.5.1.tar.gz \
@@ -42,9 +46,34 @@ RUN wget --quiet https://github.com/coreemu/core/archive/release-7.5.1.tar.gz \
 #RUN git clone https://github.com/coreemu/core \
 #    && cd core \
 
-RUN cd core-release-7.5.1 \
-    && ./install.sh 
-#    && export PATH=$PATH:/root/.local/bin \
+RUN apt-get update && \
+    cd core-release-7.5.1 \
+    && ./install.sh \
+    && export PATH=$PATH:/root/.local/bin \
+    && inv install-emane \
+    && rm -rf /var/lib/apt/lists/*
+
+#RUN apt-get update && \
+#apt-get -y install libtool libxml2-dev protobuf-compiler libpcre3-dev uuid-dev libpcap-dev && \
+#rm -rf /var/lib/apt/lists/*
+
+#RUN wget --quite https://github.com/adjacentlink/emane/archive/refs/tags/v1.2.7.tar.gz && \
+#tar xvf v1.2.7.tar.gz && \
+#cd emane-1.2.7 && \
+#./autogen.sh && \
+#./configure && \
+#make && \
+#make deb
+
+#RUN wget --quiet https://adjacentlink.com/downloads/emane/emane-1.2.7-release-1.ubuntu-20_04.amd64.tar.gz && \
+#tar xvf emane-1.2.7-release-1.ubuntu-20_04.amd64.tar.gz && \
+#cd emane-1.2.7-release-1/debs/ubuntu-20_04/amd64 && \
+#apt-get update && \
+#dpkg -i *.deb ; \
+#apt-get install -f -y && \
+#rm -rf /var/lib/apt/lists/*
+
+#make install && \
 
 #WORKDIR /root
 #RUN wget https://raw.githubusercontent.com/coreemu/core/master/daemon/requirements.txt && \
@@ -55,7 +84,8 @@ RUN cd core-release-7.5.1 \
 
 WORKDIR /root
 RUN git clone https://github.com/gh0st42/core-helpers &&\
-    cd core-helpers && ./install-symlinks.sh
+    cp core-helpers/bin/* /usr/local/bin &&\
+    rm -rf core-helpers
 
 # enable sshd
 RUN mkdir /var/run/sshd &&  sed -i 's/PermitRootLogin prohibit-password/PermitRootLogin yes/' /etc/ssh/sshd_config && \
