@@ -53,33 +53,6 @@ RUN apt-get update && \
     && inv install-emane \
     && rm -rf /var/lib/apt/lists/*
 
-#RUN apt-get update && \
-#apt-get -y install libtool libxml2-dev protobuf-compiler libpcre3-dev uuid-dev libpcap-dev && \
-#rm -rf /var/lib/apt/lists/*
-
-#RUN wget --quite https://github.com/adjacentlink/emane/archive/refs/tags/v1.2.7.tar.gz && \
-#tar xvf v1.2.7.tar.gz && \
-#cd emane-1.2.7 && \
-#./autogen.sh && \
-#./configure && \
-#make && \
-#make deb
-
-#RUN wget --quiet https://adjacentlink.com/downloads/emane/emane-1.2.7-release-1.ubuntu-20_04.amd64.tar.gz && \
-#tar xvf emane-1.2.7-release-1.ubuntu-20_04.amd64.tar.gz && \
-#cd emane-1.2.7-release-1/debs/ubuntu-20_04/amd64 && \
-#apt-get update && \
-#dpkg -i *.deb ; \
-#apt-get install -f -y && \
-#rm -rf /var/lib/apt/lists/*
-
-#make install && \
-
-#WORKDIR /root
-#RUN wget https://raw.githubusercontent.com/coreemu/core/master/daemon/requirements.txt && \
-#   python3 -m pip install -r requirements.txt && \
-#   rm requirements.txt
-
 # various last minute deps
 
 WORKDIR /root
