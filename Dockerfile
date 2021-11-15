@@ -40,14 +40,14 @@ RUN apt-get update \
     && rm -rf /var/lib/apt/lists/*
 
 # CORE
-RUN wget --quiet https://github.com/coreemu/core/archive/release-7.5.1.tar.gz \
+RUN wget --quiet https://github.com/coreemu/core/archive/release-7.5.2.tar.gz \
     && tar xvf release* \
     && rm release*.tar.gz
 #RUN git clone https://github.com/coreemu/core \
 #    && cd core \
 
 RUN apt-get update && \
-    cd core-release-7.5.1 \
+    cd core-release-7.5.2 \
     && ./install.sh \
     && export PATH=$PATH:/root/.local/bin \
     && inv install-emane \
@@ -75,7 +75,14 @@ ENV NOTVISIBLE "in users profile"
 RUN echo "export VISIBLE=now" >> /etc/profile
 
 RUN sed -i 's/grpcaddress = localhost/grpcaddress = 0.0.0.0/g' /etc/core/core.conf
+
+RUN echo custom_services_dir = /root/.core/myservices,/shared/myservices >> /etc/core/core.conf
+RUN echo custom_config_services_dir = /root/.coregui/custom_services,/shared/custom_services >> /etc/core/core.conf
+
+
 EXPOSE 22
+EXPOSE 50051
+
 
 # ADD extra /extra
 VOLUME /shared

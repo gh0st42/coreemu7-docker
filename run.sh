@@ -1,7 +1,5 @@
 #!/bin/sh
 
-#!/bin/sh
-
 SHARED="/tmp/shared"
 PLATFORM=$(uname)
 
