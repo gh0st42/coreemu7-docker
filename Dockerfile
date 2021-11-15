@@ -74,11 +74,10 @@ ENV SSHKEY ""
 ENV NOTVISIBLE "in users profile"
 RUN echo "export VISIBLE=now" >> /etc/profile
 
+RUN mkdir -p /root/.core/myservices && mkdir -p /root/.coregui/custom_services
 RUN sed -i 's/grpcaddress = localhost/grpcaddress = 0.0.0.0/g' /etc/core/core.conf
 
-RUN echo custom_services_dir = /root/.core/myservices,/shared/myservices >> /etc/core/core.conf
-RUN echo custom_config_services_dir = /root/.coregui/custom_services,/shared/custom_services >> /etc/core/core.conf
-
+COPY update-custom-services.sh /update-custom-services.sh
 
 EXPOSE 22
 EXPOSE 50051
