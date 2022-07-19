@@ -21,4 +21,4 @@ jobs:
     run: |
       docker buildx build \
         --tag gh0st42/coreemu7:latest \
-        --platform linux/amd64,linux/arm/v7,linux/arm64 . 
+        --platform linux/amd64,linux/arm64 . 
