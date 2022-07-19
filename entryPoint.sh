@@ -16,5 +16,12 @@ if [ ! -z "$SSHKEY" ]; then
     chmod 644 /root/.ssh/authorized_keys	
 fi
 
-core-gui
+# check if environment variable is set
+if [ ! -z "$CORE_GUI" ]; then
+	echo "Starting command: $CORE_GUI"
+	$CORE_GUI
+else
+	echo "Starting default core-gui"
+	core-gui
+fi
 

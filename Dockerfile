@@ -1,8 +1,10 @@
-FROM ubuntu:20.04
-LABEL Description="Docker image for core network emulator"
-
+ARG ARCH=
+FROM ${ARCH}ubuntu:20.04
+LABEL Description="Docker image for core network emulator version 7"
 
 ENV DEBIAN_FRONTEND noninteractive
+ENV CORE_GUI core-gui
+ARG CORE_NETWORK_EMULATOR_VERSION=7.5.2
 
 # development tools
 RUN apt-get update \
@@ -37,19 +39,24 @@ RUN apt-get update \
     imagemagick \
     docker.io \
     openvswitch-switch \
+    libxml2-dev \
+    libxslt-dev \
+    libproj-dev \
+    proj-bin \
     && rm -rf /var/lib/apt/lists/*
 
 # CORE
-RUN wget --quiet https://github.com/coreemu/core/archive/release-7.5.2.tar.gz \
+RUN wget --quiet https://github.com/coreemu/core/archive/release-${CORE_NETWORK_EMULATOR_VERSION}.tar.gz \
     && tar xvf release* \
     && rm release*.tar.gz
 #RUN git clone https://github.com/coreemu/core \
 #    && cd core \
 
 RUN apt-get update && \
-    cd core-release-7.5.2 \
-    && ./install.sh \
+    cd core-release-${CORE_NETWORK_EMULATOR_VERSION} \
     && export PATH=$PATH:/root/.local/bin \
+    && export GRPC_PYTHON_BUILD_EXT_COMPILER_JOBS=$(nproc) \
+    && ./install.sh -l -v \
     && inv install-emane \
     && rm -rf /var/lib/apt/lists/*
 
