@@ -22,6 +22,7 @@ docker run -it --rm \
     -e SSHKEY="`cat ~/.ssh/id_rsa.pub`" \
     -e DISPLAY=host.docker.internal:0 \
     --privileged \
+    -e CORE_GUI=core-gui \
     gh0st42/coreemu7
 else
 xhost +local:root
@@ -36,5 +37,6 @@ docker run -it --rm \
     -e DISPLAY \
     -v /tmp/.X11-unix:/tmp/.X11-unix:rw \
     --privileged \
+    -e CORE_GUI=core-gui \
     gh0st42/coreemu7
 fi
