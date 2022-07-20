@@ -43,6 +43,8 @@ RUN apt-get update \
     libxslt-dev \
     libproj-dev \
     proj-bin \
+    ebtables \
+    python3-grpc-tools \
     && rm -rf /var/lib/apt/lists/*
 
 # CORE
